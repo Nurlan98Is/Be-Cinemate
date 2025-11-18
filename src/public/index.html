@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* ВСТРОЕННЫЕ СТИЛИ ДЛЯ ТЕСТА */
+        body {
+            background-color: #0a0a0a !important;
+            color: white !important;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background: #1a1a1a !important;
+            padding: 20px;
+            border-bottom: 2px solid #00ffff;
+        }
+        .logo {
+            color: #00ffff !important;
+            font-size: 24px;
+        }
+        .main {
+            padding: 40px;
+        }
+        .h1_main {
+            color: #00ffff !important;
+            font-size: 36px;
+        }
+        .container_route {
+            background: #1a1a1a;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #00ffff;
+        }
+        .route-url {
+            color: #ff6b6b;
+            font-family: monospace;
+        }
+    </style>
+    <title>Cinemate API</title>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <h1 class="logo">Cinemate API</h1>
+        </nav>
+    </header>
+    
+    <main class="main">
+        <section class="hero">
+            <h1 class="h1_main">Добро пожаловать в API от Cinemate</h1>
+            <p class="hero-text">
+                Здесь вы можете получить данные о сериалах или фильмах, главное правильно отправлять запросы на сервер!
+            </p>
+        </section>
+        
+        <div class="container_routes">
+            <div class="container_route">
+                <h2>Залогиниться Login</h2>
+                <p class="route-url">https://be-cinemate.vercel.app/auth/login</p>
+                <p class="route-method">Метод: POST</p>
+            </div>
+
+            <div class="container_route">
+                <h2>Получить список всех сериалов</h2>
+                <p class="route-url">https://be-cinemate.vercel.app/serials</p>
+                <p class="route-method">Метод: GET</p>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <p>&copy; 2024 Cinemate API. Все права защищены.</p>
+    </footer>
+</body>
+</html>
