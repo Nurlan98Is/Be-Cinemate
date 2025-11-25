@@ -3,7 +3,6 @@ import router from './routes';
 import path from 'path';
 import cors from 'cors'
 import mongoose from 'mongoose';
-import 'dotenv/config';
 const PORT = 8080
 
 const app = express()
