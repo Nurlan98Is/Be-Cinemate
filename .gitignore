@@ -1,0 +1,11 @@
+# Конфигурационные файлы с данными
+config.json
+config.local.ts
+.env
+.env.*
+*.env
+
+# Файлы с настройками
+settings.json
+credentials.json
+node_modules/

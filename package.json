@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/app.ts",
+    "dev": "MONGODB_URI=\"mongodb+srv://iskakov9821:Iskakov98mongodb1@cluster0.nrjqjmr.mongodb.net/Cinemate\" nodemon src/app.ts",
+    "start": "MONGODB_URI=\"mongodb+srv://iskakov9821:Iskakov98mongodb1@cluster0.nrjqjmr.mongodb.net/Cinemate\" node dist/app.js",
     "build": "tsc",
-    "start": "node dist/server.js",
     "clean": "rm -rf dist"
   },
   "keywords": [],
@@ -14,7 +14,9 @@
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^9.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

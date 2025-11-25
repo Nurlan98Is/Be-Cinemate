@@ -1,18 +1,36 @@
 import { Response, Request } from "express";
 import { user } from "../db/users";
 import { infoPassWordsUsers } from "../db/users";
-export const authLogin = (req: Request, res: Response) => {
-    const body = req.body
+import User from "../models/user.model";
 
-    const userData = user
-
-    const infoUser = infoPassWordsUsers
-
-    console.log('info', infoUser)
-
-    if(body.email !== infoUser.email || body.password !== infoUser.password) {
-        return res.status(200).send('Email or password invalid')
-    }
+export const authLogin = async (req: Request, res: Response) => {
+    try {
+        const userInfo = req.body
+        console.log('userInfo in authLogin:', userInfo);
+        const userInDB = await User.findOne({email: userInfo.email, password: userInfo.password});
     
-    res.status(200).send(userData);
+        if (userInDB) {
+            res.status(200).json(userInDB);
+        } else {
+            res.status(401).send('Invalid email or password');
+        }
+
+    } catch (error) {
+        console.log('Error in authLogin:', error);
+        res.status(500).send('Server error');
+    }
+}
+
+export const authRegister = async (req: Request, res: Response) => {
+    const userInfoRegister = req.body
+
+    try {
+        const newUser = await User.create(userInfoRegister)
+        res.status(201).json(newUser);
+    } catch (error) {
+        console.log('Error in authRegister:', error);
+        res.status(500).send('Server error');
+    }   
+    
+    
 }

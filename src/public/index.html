@@ -33,6 +33,13 @@
             padding: 20px;
             margin: 10px 0;
             border-radius: 5px;
+            border-left: 4px solid yellow;
+        }
+        .container_route_category {
+            background: #1a1a1a;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 5px;
             border-left: 4px solid #00ffff;
         }
         .route-url {
@@ -58,16 +65,51 @@
         </section>
         
         <div class="container_routes">
-            <div class="container_route">
-                <h2>Залогиниться Login</h2>
-                <p class="route-url">https://be-cinemate.vercel.app/auth/login</p>
-                <p class="route-method">Метод: POST</p>
+            <div class="container_route_category">
+                <h2 class="">Аутентификация</h2>
+                <div class="container_route">
+                    <h2>Залогиниться Login</h2>
+                    <p class="route-url">https://be-cinemate.vercel.app/auth/login</p>
+                    <p class="route-method">Метод: POST</p>
+                </div>
+    
+                <div class="container_route">
+                    <h2>Зарегистрироваться</h2>
+                    <p class="route-url">https://be-cinemate.vercel.app/auth/register</p>
+                    <p class="route-method">Метод: POST</p>
+                </div>
             </div>
-
-            <div class="container_route">
-                <h2>Получить список всех сериалов</h2>
-                <p class="route-url">https://be-cinemate.vercel.app/serials</p>
-                <p class="route-method">Метод: GET</p>
+            <div class="container_route_category">
+                <h2>Получение Users</h2>
+                <div class="container_route">
+                    <h2>Получить всех Юзеров</h2>
+                    <p class="route-url">https://be-cinemate.vercel.app/users</p>
+                    <p class="route-method">Метод: GET</p>
+                </div>
+                <div class="container_route">
+                    <h2>Получить Юзера По Емайлу или по Имени и Фамилии</h2>
+                    <p class="route-url">https://be-cinemate.vercel.app/users/getUserByInfo</p>
+                    <p class="route-method">Метод: POST</p>
+                </div>
+                <div class="container_route">
+                    <h2>Получить Юзера по ID</h2>
+                    <p class="route-url">https://be-cinemate.vercel.app/users/getUserById</p>
+                    <p class="route-method">Метод: POST</p>
+                </div>
+                <div class="container_route">
+                    <h2>Получить Юзера по NickName</h2>
+                    <p class="route-url">https://be-cinemate.vercel.app/users/getUserByNickName</p>
+                    <p class="route-method">Метод: POST</p>
+                </div>
+                
+            </div>
+            <div class="container_route_category">
+                <h2>Поулчение списков фильмов и сериалов</h2>
+                <div class="container_route">
+                    <h2>Получить список всех сериалов</h2>
+                    <p class="route-url">https://be-cinemate.vercel.app/serials</p>
+                    <p class="route-method">Метод: GET</p>
+                </div>
             </div>
         </div>
     </main>
