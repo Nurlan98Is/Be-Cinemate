@@ -9,6 +9,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const app_1 = __importDefault(require("./app"));
 async function startServer() {
     try {
+        console.log("MONGO_URI:", process.env.MONGODB_URI);
         if (!process.env.MONGODB_URI) {
             throw new Error("❌ MONGODB_URI is missing in .env");
         }
