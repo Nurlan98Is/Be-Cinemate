@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { hboSeries, fxPopularSeries, netflixSeries, allArraySeries } from "../db/serials";
 import Series from '../models/series.model'
 
 export const getAllSeries = async (req: Request, res: Response) => {
