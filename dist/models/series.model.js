@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const SeriesSchema = new mongoose_1.Schema({
-    id: { type: Number, required: true, unique: true },
     title: {
         original: { type: String, required: true },
         russian: { type: String, required: true }

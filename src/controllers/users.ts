@@ -1,66 +1,43 @@
 import { Request, Response } from "express";
 import User from '../models/user.model'
 
-export const getAllUsers = async (req: Request, res: Response) => {
+// Получить всех пользователей или с фильтром через query-параметры
+export const getUsers = async (req: Request, res: Response) => {
+    const { nickName, email, firstName, lastName } = req.query;
+
     try {
-        const users = await User.find({});
+        let query: any = {};
+
+        if (nickName) query.nickName = nickName;
+        if (email) query.email = email;
+        if (firstName && lastName) {
+            query.firstName = firstName;
+            query.lastName = lastName;
+        }
+
+        const users = Object.keys(query).length ? await User.find(query) : await User.find({});
+        if (!users || users.length === 0) {
+            return res.status(404).send('User not found');
+        }
+
         console.log('sended users', users);
         res.status(200).json(users);
     } catch (error) {
+        console.error(error);
         res.status(500).send('Server error');
     }
 }
 
-export const getUserBysomeInfo = async (req: Request, res: Response) => {
-    
-    const email= req.body.email;
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    console.log('received info', email, firstName, lastName);
-    try {
-        const findUserByEmail = await User.findOne({email: email});
-
-        const findUserByNameAndLastName = await User.findOne({firstName: firstName, lastName: lastName});
-        if(findUserByEmail || findUserByNameAndLastName) {
-            res.status(200).json(findUserByEmail || findUserByNameAndLastName);
-        } else {
-            res.status(404).send('User not found');
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(404).send('Request not valid');
-    }
-}
-
+// Получить пользователя по ID
 export const getUserById = async (req: Request, res: Response) => {
-    const userId = req.body.id;
-
+    const userId = req.params.id;
+    console.log('received id', userId);
     try {
-        const findUserById = await User.findOne({_id: userId});
-        if (findUserById) {
-            res.status(200).json(findUserById);
-
-        } else {
-            res.status(404).send('User not found');
-        }
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).send('User not found');
+        res.status(200).json(user);
     } catch (error) {
-        console.log(error);
-        res.status(404).send('Request not valid');
-    }
-}
-
-export const getUserByNickName = async (req: Request, res: Response) => {
-    const nickName = req.body.nickName;
-
-    try {
-        const findNickName = await User.findOne({nickName: nickName});
-        if (findNickName) {
-            res.status(200).json(findNickName);
-        } else {
-            res.status(404).send('User not found');
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(404).send('Request not valid');
+        console.error(error);
+        res.status(500).send('Server error');
     }
 }

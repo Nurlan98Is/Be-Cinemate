@@ -1,14 +1,10 @@
 import { Router, Request, Response } from "express";
-import { getAllUsers, getUserById, getUserBysomeInfo, getUserByNickName } from "../controllers/users";
+import { getUsers, getUserById } from "../controllers/users";
 
 const router = Router();
 
-router.get('/', getAllUsers);
+router.get('/', getUsers);
 
-router.post('/getUserByInfo', getUserBysomeInfo)
-
-router.post('/getUserById', getUserById)
-
-router.post('getUserByNickName', getUserByNickName) 
+router.get('/:id', getUserById)
 
 export default router;

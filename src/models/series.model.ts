@@ -1,7 +1,6 @@
 import { Schema, model, ObjectId } from "mongoose";
 
 const SeriesSchema = new Schema({
-    id: { type: Number, required: true, unique: true },
     title: {
       original: { type: String, required: true },
       russian: { type: String, required: true }

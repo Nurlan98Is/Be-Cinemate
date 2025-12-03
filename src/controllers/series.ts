@@ -24,7 +24,6 @@ export const getSerialById = async(req: Request, res: Response) => {
 }
 export const getSeriesByFilters = async (req: Request, res: Response) => {
     const { source, genre } = req.query;
-
     try {
         const filter: any = {};
         if (source) filter.source = source;

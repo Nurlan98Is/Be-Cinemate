@@ -88,18 +88,20 @@
                 </div>
                 <div class="container_route">
                     <h2>Получить Юзера По Email или по Имени и Фамилии</h2>
-                    <p class="route-url">https://be-cinemate.onrender.com/users/getUserByInfo</p>
-                    <p class="route-method">Метод: POST</p>
+                    <p>Можно указать такие параметры в query строке:</p>
+                    <p> 
+                        /users?nickName=JohnDoe
+                        /users?email=john@example.com
+                        /users?firstName=John&lastName=Doe
+                        /users?nickName=JohnDoe&email=john@example.com
+                    </p>
+                    <p class="route-url">https://be-cinemate.onrender.com/users/?nickName=JohnDoe</p>
+                    <p class="route-method">Метод: GET</p>
                 </div>
                 <div class="container_route">
                     <h2>Получить Юзера по ID</h2>
-                    <p class="route-url">https://be-cinemate.onrender.com/users/getUserById</p>
-                    <p class="route-method">Метод: POST</p>
-                </div>
-                <div class="container_route">
-                    <h2>Получить Юзера по NickName</h2>
-                    <p class="route-url">https://be-cinemate.onrender.com/getUserByNickName</p>
-                    <p class="route-method">Метод: POST</p>
+                    <p class="route-url">https://be-cinemate.onrender.com/users/:id</p>
+                    <p class="route-method">Метод: GET</p>
                 </div>
                 
             </div>
@@ -117,7 +119,7 @@
                 </div>
                 <div class="container_route">
                     <h2>Получить список сериалов по фильтру (жанр, источнику и т.д)</h2>
-                    <p class="route-url">https://be-cinemate.onrender.com/series/filter</p>
+                    <p class="route-url">https://be-cinemate.onrender.com/series/filter?source=FX</p>
                     <p class="route-method">Метод: GET</p>
                 </div>
             </div>

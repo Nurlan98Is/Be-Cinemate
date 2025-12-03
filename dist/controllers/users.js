@@ -3,71 +3,47 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserByNickName = exports.getUserById = exports.getUserBysomeInfo = exports.getAllUsers = void 0;
+exports.getUserById = exports.getUsers = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
-const getAllUsers = async (req, res) => {
+// Получить всех пользователей или с фильтром через query-параметры
+const getUsers = async (req, res) => {
+    const { nickName, email, firstName, lastName } = req.query;
     try {
-        const users = await user_model_1.default.find({});
+        let query = {};
+        if (nickName)
+            query.nickName = nickName;
+        if (email)
+            query.email = email;
+        if (firstName && lastName) {
+            query.firstName = firstName;
+            query.lastName = lastName;
+        }
+        const users = Object.keys(query).length ? await user_model_1.default.find(query) : await user_model_1.default.find({});
+        if (!users || users.length === 0) {
+            return res.status(404).send('User not found');
+        }
         console.log('sended users', users);
         res.status(200).json(users);
     }
     catch (error) {
+        console.error(error);
         res.status(500).send('Server error');
     }
 };
-exports.getAllUsers = getAllUsers;
-const getUserBysomeInfo = async (req, res) => {
-    const email = req.body.email;
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    console.log('received info', email, firstName, lastName);
-    try {
-        const findUserByEmail = await user_model_1.default.findOne({ email: email });
-        const findUserByNameAndLastName = await user_model_1.default.findOne({ firstName: firstName, lastName: lastName });
-        if (findUserByEmail || findUserByNameAndLastName) {
-            res.status(200).json(findUserByEmail || findUserByNameAndLastName);
-        }
-        else {
-            res.status(404).send('User not found');
-        }
-    }
-    catch (error) {
-        console.log(error);
-        res.status(404).send('Request not valid');
-    }
-};
-exports.getUserBysomeInfo = getUserBysomeInfo;
+exports.getUsers = getUsers;
+// Получить пользователя по ID
 const getUserById = async (req, res) => {
-    const userId = req.body.id;
+    const userId = req.params.id;
+    console.log('received id', userId);
     try {
-        const findUserById = await user_model_1.default.findOne({ _id: userId });
-        if (findUserById) {
-            res.status(200).json(findUserById);
-        }
-        else {
-            res.status(404).send('User not found');
-        }
+        const user = await user_model_1.default.findById(userId);
+        if (!user)
+            return res.status(404).send('User not found');
+        res.status(200).json(user);
     }
     catch (error) {
-        console.log(error);
-        res.status(404).send('Request not valid');
+        console.error(error);
+        res.status(500).send('Server error');
     }
 };
 exports.getUserById = getUserById;
-const getUserByNickName = async (req, res) => {
-    const nickName = req.body.nickName;
-    try {
-        const findNickName = await user_model_1.default.findOne({ nickName: nickName });
-        if (findNickName) {
-            res.status(200).json(findNickName);
-        }
-        else {
-            res.status(404).send('User not found');
-        }
-    }
-    catch (error) {
-        console.log(error);
-        res.status(404).send('Request not valid');
-    }
-};
-exports.getUserByNickName = getUserByNickName;
