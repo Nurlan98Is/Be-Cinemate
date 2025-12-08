@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import User from '../models/user.model'
-
+import User from '../../models/user.model'
+import Series from "../../models/series.model";
 // Получить всех пользователей или с фильтром через query-параметры
 export const getUsers = async (req: Request, res: Response) => {
     const { nickName, email, firstName, lastName } = req.query;
@@ -33,7 +33,7 @@ export const getUserById = async (req: Request, res: Response) => {
     const userId = req.params.id;
     console.log('received id', userId);
     try {
-        const user = await User.findById(userId);
+        const user = await User.findById(userId).populate('favoriteSeries', 'title image')
         if (!user) return res.status(404).send('User not found');
         res.status(200).json(user);
     } catch (error) {
@@ -46,7 +46,7 @@ export const getMyProfile = async (req: Request, res: Response) => {
     const userId = res.locals.user.id;
 
     try {
-        const myProfile = await User.findById(userId);
+        const myProfile = await User.findById(userId).populate('favoriteSeries').lean();
 
         res.status(200).json(myProfile);
     } catch (error) {

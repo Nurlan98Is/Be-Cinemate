@@ -1,5 +1,6 @@
-import { Schema, model, Document, Model, Types } from 'mongoose';
-import jwt from 'jsonwebtoken'
+import { Schema, model, Document, Model, Types, } from 'mongoose';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 interface IUser {
     email: string;
@@ -9,8 +10,11 @@ interface IUser {
     nickName: string;
     password: string;
     phoneNumber: string;
-    isAdmin?: boolean;
-  }
+    isAdmin?: boolean;  
+    favoriteSeries: Types.ObjectId[];
+    favoriteMovies: Types.ObjectId[];                    
+    }
+  
 
   interface IUserMethods {
     generateToken(): string;
@@ -54,17 +58,36 @@ const userSchema = new Schema<IUser, Model<IUser, {}, IUserMethods>, IUserMethod
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        select: false
     },
     phoneNumber: {
         type: String,
         required: true
-    }
+    },
+    favoriteSeries: [{
+        type: Schema.Types.ObjectId,
+        ref: "Series"
+      }],
+      favoriteMovies: [{
+        type: Schema.Types.ObjectId,
+        ref: "Movie"
+      }],
 }, {
     timestamps: true
 }
 )
 
+userSchema.pre('save', async function (this: Document<unknown, {}, IUser> & IUser) {
+    if (!this.isModified('password')) return;
+  
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+  });
+
+  userSchema.methods.comparePassword = async function(candidatePassword: string) {
+    return bcrypt.compare(candidatePassword, this.password);
+  };
 userSchema.methods.generateToken = function (): string {
     return jwt.sign({id: this._id}, process.env.JWT_SECRET as string, {
         expiresIn: '24h'

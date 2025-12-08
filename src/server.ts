@@ -8,12 +8,10 @@ import app from './app';
 const {JWT_SECRET, MONGODB_URI} = process.env;
 async function startServer() {
   try {
-    console.log("MONGO_URI:", process.env.MONGODB_URI);
-    if (!process.env.MONGODB_URI) {
+    if (!MONGODB_URI) {
       throw new Error("MONGODB_URI is missing in .env");
     }
-    console.log("JWT_SECRET:", JWT_SECRET)
-    await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect(MONGODB_URI as string);
     console.log('MongoDB connected');
 
     const PORT = process.env.PORT || 8080;
