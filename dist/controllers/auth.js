@@ -17,7 +17,8 @@ const authLogin = async (req, res) => {
             res.status(200).cookie('accessToken', token, {
                 httpOnly: true,
                 secure: NODE_ENV === 'production',
-                maxAge: 24 * 60 * 60 * 1000
+                maxAge: 24 * 60 * 60 * 1000,
+                sameSite: 'none',
             }).json(userInDB);
         }
         else {

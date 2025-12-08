@@ -16,7 +16,8 @@ export const authLogin = async (req: Request, res: Response) => {
             res.status(200).cookie('accessToken', token, {
                 httpOnly: true,
                 secure: NODE_ENV === 'production',
-                maxAge: 24 * 60 * 60 * 1000
+                maxAge: 24 * 60 * 60 * 1000,
+                sameSite: 'none',
             }).json(userInDB);
         } else {
             res.status(401).send('Invalid email or password');
