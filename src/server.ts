@@ -1,10 +1,11 @@
 import dotenv from 'dotenv';
-dotenv.config(); 
-
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
 import mongoose from 'mongoose';
 import app from './app';
 
-const {JWT_SECRET} = process.env;
+const {JWT_SECRET, MONGODB_URI} = process.env;
 async function startServer() {
   try {
     console.log("MONGO_URI:", process.env.MONGODB_URI);
