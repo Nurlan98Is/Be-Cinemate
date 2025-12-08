@@ -1,6 +1,30 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Document, Model, Types } from 'mongoose';
+import jwt from 'jsonwebtoken'
 
-const userSchema = new Schema({
+interface IUser {
+    email: string;
+    firstName: string;
+    lastName: string;
+    birthDate: string;
+    nickName: string;
+    password: string;
+    phoneNumber: string;
+    isAdmin?: boolean;
+  }
+
+  interface IUserMethods {
+    generateToken(): string;
+  }
+
+  type UserDocument = Document<unknown, {}, IUser> & 
+  IUser & 
+  IUserMethods & {
+    _id: Types.ObjectId;
+    createdAt?: Date;
+    updatedAt?: Date;
+  };
+
+const userSchema = new Schema<IUser, Model<IUser, {}, IUserMethods>, IUserMethods>({
     email: {
         type: String,
         required: true,
@@ -41,6 +65,11 @@ const userSchema = new Schema({
 }
 )
 
+userSchema.methods.generateToken = function (): string {
+    return jwt.sign({id: this._id}, process.env.JWT_SECRET as string, {
+        expiresIn: '24h'
+    })
+} 
 const User = model('User', userSchema)
 
 export default User;

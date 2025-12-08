@@ -41,3 +41,15 @@ export const getUserById = async (req: Request, res: Response) => {
         res.status(500).send('Server error');
     }
 }
+
+export const getMyProfile = async (req: Request, res: Response) => {
+    const userId = res.locals.user.id;
+
+    try {
+        const myProfile = await User.findById(userId);
+
+        res.status(200).json(myProfile);
+    } catch (error) {
+        console.error(error);       
+    }
+}
