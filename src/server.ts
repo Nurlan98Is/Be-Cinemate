@@ -4,13 +4,14 @@ dotenv.config();
 import mongoose from 'mongoose';
 import app from './app';
 
+const {JWT_SECRET} = process.env;
 async function startServer() {
   try {
     console.log("MONGO_URI:", process.env.MONGODB_URI);
     if (!process.env.MONGODB_URI) {
       throw new Error("MONGODB_URI is missing in .env");
     }
-
+    console.log("JWT_SECRET:", JWT_SECRET)
     await mongoose.connect(process.env.MONGODB_URI);
     console.log('MongoDB connected');
 
