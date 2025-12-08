@@ -11,6 +11,9 @@ interface IUser {
     password: string;
     phoneNumber: string;
     isAdmin?: boolean;  
+    friendRequestsSent: Types.ObjectId[];
+    friendRequestsReceived: Types.ObjectId[];
+    friendsList: Types.ObjectId[];
     favoriteSeries: Types.ObjectId[];
     favoriteMovies: Types.ObjectId[];                    
     }
@@ -65,6 +68,18 @@ const userSchema = new Schema<IUser, Model<IUser, {}, IUserMethods>, IUserMethod
         type: String,
         required: true
     },
+    friendRequestsSent: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }],
+    friendRequestsReceived: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }],
+    friendsList: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }],
     favoriteSeries: [{
         type: Schema.Types.ObjectId,
         ref: "Series"
@@ -85,7 +100,8 @@ userSchema.pre('save', async function (this: Document<unknown, {}, IUser> & IUse
     this.password = await bcrypt.hash(this.password, salt);
   });
 
-  userSchema.methods.comparePassword = async function(candidatePassword: string) {
+
+userSchema.methods.comparePassword = async function(candidatePassword: string) {
     return bcrypt.compare(candidatePassword, this.password);
   };
 userSchema.methods.generateToken = function (): string {

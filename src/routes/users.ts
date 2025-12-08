@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express";
 import { addFavoriteSeries, removeFavoriteSeries, getFavoriteSeries } from "../controllers/user/favoriteSeries.controller";
 import { getUsers, getUserById, getMyProfile } from "../controllers/user/users.controller";
 import authMiddleware from "../middlewares/authMiddleware";
+import { sendRequestToBeFrined } from "../controllers/user/friends.controller";
 
 const router = Router();
 
@@ -13,8 +14,10 @@ router.delete('/me/favorite-series', authMiddleware, removeFavoriteSeries);
 
 router.get('/me/favorite-series', authMiddleware, getFavoriteSeries);
 
-router.get('/', getUsers);
+router.get('/', authMiddleware, getUsers);
 
 router.get('/:id', getUserById);
+
+router.post('/friends', authMiddleware, sendRequestToBeFrined);
 
 export default router;
