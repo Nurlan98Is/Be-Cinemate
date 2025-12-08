@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getMyProfile = exports.getUserById = exports.getUsers = void 0;
-const user_model_1 = __importDefault(require("../models/user.model"));
+const user_model_1 = __importDefault(require("../../models/user.model"));
 // Получить всех пользователей или с фильтром через query-параметры
 const getUsers = async (req, res) => {
     const { nickName, email, firstName, lastName } = req.query;
@@ -36,7 +36,7 @@ const getUserById = async (req, res) => {
     const userId = req.params.id;
     console.log('received id', userId);
     try {
-        const user = await user_model_1.default.findById(userId);
+        const user = await user_model_1.default.findById(userId).populate('favoriteSeries', 'title image');
         if (!user)
             return res.status(404).send('User not found');
         res.status(200).json(user);
@@ -50,7 +50,7 @@ exports.getUserById = getUserById;
 const getMyProfile = async (req, res) => {
     const userId = res.locals.user.id;
     try {
-        const myProfile = await user_model_1.default.findById(userId);
+        const myProfile = await user_model_1.default.findById(userId).populate('favoriteSeries').lean();
         res.status(200).json(myProfile);
     }
     catch (error) {

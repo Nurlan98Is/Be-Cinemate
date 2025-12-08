@@ -4,130 +4,180 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* ВСТРОЕННЫЕ СТИЛИ ДЛЯ ТЕСТА */
+        /* Общие стили */
         body {
-            background-color: #0a0a0a !important;
-            color: white !important;
+            background-color: #0a0a0a;
+            color: #ffffff;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
         }
-        .header {
-            background: #1a1a1a !important;
+        header {
+            background-color: #1a1a1a;
             padding: 20px;
             border-bottom: 2px solid #00ffff;
         }
         .logo {
-            color: #00ffff !important;
-            font-size: 24px;
+            color: #00ffff;
+            font-size: 28px;
+            margin: 0;
         }
-        .main {
-            padding: 40px;
+        main {
+            padding: 40px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            margin: 0 0 10px 0;
         }
         .h1_main {
-            color: #00ffff !important;
+            color: #00ffff;
             font-size: 36px;
+            margin-bottom: 20px;
         }
-        .container_route {
-            background: #1a1a1a;
-            padding: 20px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border-left: 4px solid yellow;
+        .hero-text {
+            font-size: 18px;
+            margin-bottom: 30px;
         }
         .container_route_category {
             background: #1a1a1a;
             padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #00ffff;
+        }
+        .container_route_category h2 {
+            color: #00ffff;
+            margin-bottom: 15px;
+        }
+        .container_route {
+            background: #222;
+            padding: 15px 20px;
             margin: 10px 0;
             border-radius: 5px;
-            border-left: 4px solid #00ffff;
+            border-left: 4px solid yellow;
+        }
+        .container_route h3 {
+            color: #ffcc00;
+            margin-bottom: 5px;
         }
         .route-url {
             color: #ff6b6b;
             font-family: monospace;
+            word-break: break-all;
+        }
+        .route-method {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 2px solid #00ffff;
+            margin-top: 40px;
+            font-size: 14px;
         }
     </style>
     <title>Cinemate API</title>
 </head>
 <body>
-    <header class="header">
-        <nav class="nav">
-            <h1 class="logo">Cinemate API</h1>
-        </nav>
+    <header>
+        <h1 class="logo">Cinemate API</h1>
     </header>
-    
-    <main class="main">
+
+    <main>
         <section class="hero">
             <h1 class="h1_main">Добро пожаловать в API от Cinemate</h1>
             <p class="hero-text">
-                Здесь вы можете получить данные о сериалах или фильмах, главное правильно отправлять запросы на сервер!
+                Здесь вы можете получить данные о сериалах или фильмах. Главное — правильно отправлять запросы на сервер!
             </p>
         </section>
-        
-        <div class="container_routes">
-            <div class="container_route_category">
-                <h2 class="">Аутентификация</h2>
-                <div class="container_route">
-                    <h2>Залогиниться Login</h2>
-                    <p class="route-url">https://be-cinemate.onrender.com/auth/login</p>
-                    <p class="route-method">Метод: POST</p>
-                </div>
-    
-                <div class="container_route">
-                    <h2>Зарегистрироваться</h2>
-                    <p class="route-url">https://be-cinemate.onrender.com/auth/register</p>
-                    <p class="route-method">Метод: POST</p>
-                </div>
+
+        <!-- Аутентификация -->
+        <div class="container_route_category">
+            <h2>Аутентификация</h2>
+            <div class="container_route">
+                <h3>Login</h3>
+                <p class="route-url">https://be-cinemate.onrender.com/auth/login</p>
+                <p class="route-method">Метод: POST</p>
             </div>
-            <div class="container_route_category">
-                <h2>Получение Users</h2>
-                <div class="container_route">
-                    <h2>Получить всех Юзеров</h2>
-                    <p class="route-url">https://be-cinemate.onrender.com/users</p>
-                    <p class="route-method">Метод: GET</p>
-                </div>
-                <div class="container_route">
-                    <h2>Получить Юзера По Email или по Имени и Фамилии</h2>
-                    <p>Можно указать такие параметры в query строке:</p>
-                    <p> 
-                        /users?nickName=JohnDoe
-                        /users?email=john@example.com
-                        /users?firstName=John&lastName=Doe
-                        /users?nickName=JohnDoe&email=john@example.com
-                    </p>
-                    <p class="route-url">https://be-cinemate.onrender.com/users/?nickName=JohnDoe</p>
-                    <p class="route-method">Метод: GET</p>
-                </div>
-                <div class="container_route">
-                    <h2>Получить Юзера по ID</h2>
-                    <p class="route-url">https://be-cinemate.onrender.com/users/:id</p>
-                    <p class="route-method">Метод: GET</p>
-                </div>
-                
+            <div class="container_route">
+                <h3>Register</h3>
+                <p class="route-url">https://be-cinemate.onrender.com/auth/register</p>
+                <p class="route-method">Метод: POST</p>
             </div>
-            <div class="container_route_category">
-                <h2>Поулчение списков фильмов и сериалов</h2>
-                <div class="container_route">
-                    <h2>Получить список всех сериалов</h2>
-                    <p class="route-url">https://be-cinemate.onrender.com/series</p>
-                    <p class="route-method">Метод: GET</p>
-                </div>
-                <div class="container_route">
-                    <h2>Получить сериал по ID</h2>
-                    <p class="route-url">https://be-cinemate.onrender.com/series/:id</p>
-                    <p class="route-method">Метод: GET</p>
-                </div>
-                <div class="container_route">
-                    <h2>Получить список сериалов по фильтру (жанр, источнику и т.д)</h2>
-                    <p class="route-url">https://be-cinemate.onrender.com/series/filter?source=FX</p>
-                    <p class="route-method">Метод: GET</p>
-                </div>
+        </div>
+
+        <!-- Пользователи -->
+        <div class="container_route_category">
+            <h2>Пользователи</h2>
+            <div class="container_route">
+                <h3>Получить всех пользователей</h3>
+                <p class="route-url">https://be-cinemate.onrender.com/users</p>
+                <p class="route-method">Метод: GET</p>
+            </div>
+            <div class="container_route">
+                <h3>Поиск пользователя по параметрам</h3>
+                <p>Query параметры:</p>
+                <ul>
+                    <li>/users?nickName=JohnDoe</li>
+                    <li>/users?email=john@example.com</li>
+                    <li>/users?firstName=John&lastName=Doe</li>
+                    <li>/users?nickName=JohnDoe&email=john@example.com</li>
+                </ul>
+                <p class="route-url">https://be-cinemate.onrender.com/users/?nickName=JohnDoe</p>
+                <p class="route-method">Метод: GET</p>
+            </div>
+            <div class="container_route">
+                <h3>Получить пользователя по ID</h3>
+                <p class="route-url">https://be-cinemate.onrender.com/users/:id</p>
+                <p class="route-method">Метод: GET</p>
+            </div>
+        </div>
+
+        <!-- Favorite Series -->
+        <div class="container_route_category">
+            <h2>Любимые сериалы пользователя</h2>
+            <div class="container_route">
+                <h3>Добавить сериал в избранное</h3>
+                <p class="route-url">https://be-cinemate.onrender.com/users/me/favorite-series</p>
+                <p class="route-method">Метод: POST</p>
+            </div>
+            <div class="container_route">
+                <h3>Получить список любимых сериалов</h3>
+                <p class="route-url">https://be-cinemate.onrender.com/users/me/favorite-series</p>
+                <p class="route-method">Метод: GET</p>
+            </div>
+            <div class="container_route">
+                <h3>Удалить сериал из избранного</h3>
+                <p class="route-url">https://be-cinemate.onrender.com/users/me/favorite-series</p>
+                <p class="route-method">Метод: DELETE</p>
+            </div>
+        </div>
+
+        <!-- Сериалы -->
+        <div class="container_route_category">
+            <h2>Сериалы</h2>
+            <div class="container_route">
+                <h3>Получить все сериалы</h3>
+                <p class="route-url">https://be-cinemate.onrender.com/series</p>
+                <p class="route-method">Метод: GET</p>
+            </div>
+            <div class="container_route">
+                <h3>Получить сериал по ID</h3>
+                <p class="route-url">https://be-cinemate.onrender.com/series/:id</p>
+                <p class="route-method">Метод: GET</p>
+            </div>
+            <div class="container_route">
+                <h3>Фильтрация сериалов</h3>
+                <p class="route-url">https://be-cinemate.onrender.com/series/filter?source=FX</p>
+                <p class="route-method">Метод: GET</p>
             </div>
         </div>
     </main>
-    
-    <footer class="footer">
-        <p>&copy; 2024 Cinemate API. Все права защищены.</p>
+
+    <footer>
+        &copy; 2024 Cinemate API. Все права защищены.
     </footer>
 </body>
 </html>
