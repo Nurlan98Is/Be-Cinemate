@@ -83,13 +83,6 @@ const getSerialById = async (req, res) => {
         console.error(error);
         res.status(500).json({ message: "Ошибка сервера" });
     }
-    // const serial = await Series.findById(id);
-    // const seasons = await Season.find({ seriesId: id})
-    // const episodes = await Episode.find({ episodeId: '6929c4e74e2471a22af876ea'});
-    // if (!serial) {
-    //     return res.status(404).json({ message: "Сериал не найден" });
-    // }
-    // res.status(200).json({serial, seasons, episodes});
 };
 exports.getSerialById = getSerialById;
 const getSeriesByFilters = async (req, res) => {

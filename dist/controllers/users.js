@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserById = exports.getUsers = void 0;
+exports.getMyProfile = exports.getUserById = exports.getUsers = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 // Получить всех пользователей или с фильтром через query-параметры
 const getUsers = async (req, res) => {
@@ -47,3 +47,14 @@ const getUserById = async (req, res) => {
     }
 };
 exports.getUserById = getUserById;
+const getMyProfile = async (req, res) => {
+    const userId = res.locals.user.id;
+    try {
+        const myProfile = await user_model_1.default.findById(userId);
+        res.status(200).json(myProfile);
+    }
+    catch (error) {
+        console.error(error);
+    }
+};
+exports.getMyProfile = getMyProfile;
