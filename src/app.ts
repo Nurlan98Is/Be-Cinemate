@@ -5,7 +5,10 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173", "https://cinemate-phi.vercel.app"],
+  credentials: true
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('public'));
