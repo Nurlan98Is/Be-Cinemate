@@ -46,7 +46,7 @@ export const getMyProfile = async (req: Request, res: Response) => {
     const userId = res.locals.user.id;
 
     try {
-        const myProfile = await User.findById(userId).populate('favoriteSeries').lean();
+        const myProfile = await User.findById(userId).populate('favoriteSeries').populate('friendsList').lean();
 
         res.status(200).json(myProfile);
     } catch (error) {

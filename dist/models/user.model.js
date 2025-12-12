@@ -42,13 +42,30 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: true
     },
+    friendRequestsSent: [{
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: "User",
+            default: [],
+        }],
+    friendRequestsReceived: [{
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: "User",
+            default: [],
+        }],
+    friendsList: [{
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: "User",
+            default: [],
+        }],
     favoriteSeries: [{
             type: mongoose_1.Schema.Types.ObjectId,
-            ref: "Series"
+            ref: "Series",
+            default: [],
         }],
     favoriteMovies: [{
             type: mongoose_1.Schema.Types.ObjectId,
-            ref: "Movie"
+            ref: "Movie",
+            default: [],
         }],
 }, {
     timestamps: true

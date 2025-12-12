@@ -70,23 +70,28 @@ const userSchema = new Schema<IUser, Model<IUser, {}, IUserMethods>, IUserMethod
     },
     friendRequestsSent: [{
         type: Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        default: [],
     }],
     friendRequestsReceived: [{
         type: Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        default: [],
     }],
     friendsList: [{
         type: Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        default: [],
     }],
     favoriteSeries: [{
         type: Schema.Types.ObjectId,
-        ref: "Series"
+        ref: "Series",
+        default: [],
       }],
       favoriteMovies: [{
         type: Schema.Types.ObjectId,
-        ref: "Movie"
+        ref: "Movie",
+        default: [],
       }],
 }, {
     timestamps: true
