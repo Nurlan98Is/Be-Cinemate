@@ -9,6 +9,9 @@ const sendRequestToBeFrined = async (req, res) => {
     try {
         const userId = res.locals.user.id;
         const { friendId } = req.body;
+        console.log('Receive request in SendRequestToBeFriend route:');
+        console.log('userID:', userId);
+        console.log('FriendsID:', friendId);
         const sendRequesForFriends = await user_model_1.default.findByIdAndUpdate(friendId, { $addToSet: { friendRequestsReceived: userId } }, { new: true }).populate('friendRequestsReceived');
         const setSendRequest = await user_model_1.default.findByIdAndUpdate(userId, { $addToSet: { friendRequestsSent: friendId } }, { new: true }).populate('friendRequestsSent');
         res.status(200).json({ sendRequesForFriends, setSendRequest });
@@ -26,6 +29,9 @@ const addToFriend = async (req, res) => {
     try {
         const userId = res.locals.user.id;
         const { friendId } = req.body;
+        console.log('Receive request in AddToFriends route:');
+        console.log('userID:', userId);
+        console.log('FriendsID:', friendId);
         const updatedUser = await user_model_1.default.findByIdAndUpdate(userId, {
             $addToSet: { friendsList: friendId },
             $pull: { friendRequestsReceived: friendId }
@@ -33,7 +39,7 @@ const addToFriend = async (req, res) => {
         const updatedFriend = await user_model_1.default.findByIdAndUpdate(friendId, {
             $addToSet: { friendsList: userId },
             $pull: { friendRequestsSent: userId }
-        }, { new: true }).populate('friendsList', 'nickName email');
+        }, { new: true }).populate('friendsList');
         res.status(200).json({ user: updatedUser, friend: updatedFriend });
     }
     catch (error) {
