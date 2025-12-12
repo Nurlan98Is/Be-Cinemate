@@ -33,7 +33,7 @@ export const getUserById = async (req: Request, res: Response) => {
     const userId = req.params.id;
     console.log('received id', userId);
     try {
-        const user = await User.findById(userId).populate('favoriteSeries', 'title image')
+        const user = await User.findById(userId).populate('favoriteSeries').populate('friendsList').populate('friendRequestsSent').populate('friendRequestsReceived')
         if (!user) return res.status(404).send('User not found');
         res.status(200).json(user);
     } catch (error) {
@@ -46,7 +46,7 @@ export const getMyProfile = async (req: Request, res: Response) => {
     const userId = res.locals.user.id;
 
     try {
-        const myProfile = await User.findById(userId).populate('favoriteSeries').populate('friendsList').lean();
+        const myProfile = await User.findById(userId).populate('favoriteSeries').populate('friendsList').populate('friendRequestsSent').populate('friendRequestsReceived').lean();
 
         res.status(200).json(myProfile);
     } catch (error) {

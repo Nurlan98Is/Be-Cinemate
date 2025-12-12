@@ -10,7 +10,7 @@ export const authLogin = async (req: Request, res: Response) => {
       const { email, password } = req.body;
       
       console.log('Login attempt:', { email, password });
-      const userInDB = await User.findOne({ email }).select('+password');
+      const userInDB = await User.findOne({ email }).select('+password').populate('favoriteSeries').populate('friendsList').populate('friendRequestsSent').populate('friendRequestsReceived');
   
       if (!userInDB) {
         return res.status(401).send('User Not Found');
@@ -47,6 +47,7 @@ export const authLogout = (req: Request, res: Response) => {
         httpOnly: true
     }).json({ message: 'ok' })
 }
+
 export const authRegister = async (req: Request, res: Response) => {
     const userInfoRegister = req.body
     try {

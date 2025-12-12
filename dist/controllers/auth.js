@@ -11,7 +11,7 @@ const authLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
         console.log('Login attempt:', { email, password });
-        const userInDB = await user_model_1.default.findOne({ email }).select('+password');
+        const userInDB = await user_model_1.default.findOne({ email }).select('+password').populate('favoriteSeries').populate('friendsList').populate('friendRequestsSent').populate('friendRequestsReceived');
         if (!userInDB) {
             return res.status(401).send('User Not Found');
         }
