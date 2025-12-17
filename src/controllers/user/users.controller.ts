@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import User from '../../models/user.model'
+import mongoose from "mongoose";
 import Series from "../../models/series.model";
 // Получить всех пользователей или с фильтром через query-параметры
 export const getUsers = async (req: Request, res: Response) => {
@@ -30,23 +31,67 @@ export const getUsers = async (req: Request, res: Response) => {
 
 // Получить пользователя по ID
 export const getUserById = async (req: Request, res: Response) => {
-    const userId = req.params.id;
-    console.log('received id', userId);
     try {
-        const user = await User.findById(userId).populate('favoriteSeries').populate('friendsList').populate('friendRequestsSent').populate('friendRequestsReceived')
-        if (!user) return res.status(404).send('User not found');
-        res.status(200).json(user);
+      if (!res.locals.user) {
+        return res.status(401).json({ message: 'Unauthorized' });
+      }
+  
+      const profileUserId = req.params.id;
+      const currentUserId = res.locals.user.id;
+  
+      const profileUser = await User.findById(profileUserId)
+      .select('-friendsList -friendRequestsSent -friendRequestsReceived')
+        .populate('favoriteSeries')
+       
+  
+      if (!profileUser) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      const currentUser = await User.findById(currentUserId);
+      if (!currentUser) {
+        return res.status(404).json({ message: 'Current user not found' });
+      }
+  
+      const profileUserObjectId = new mongoose.Types.ObjectId(profileUserId);
+  
+      const isFriend = currentUser.friendsList.some(id => id.equals(profileUserObjectId));
+      const requestSent = currentUser.friendRequestsSent.some(id => id.equals(profileUserObjectId));
+      const requestReceived = currentUser.friendRequestsReceived.some(id => id.equals(profileUserObjectId));
+  
+      res.status(200).json({
+        user: profileUser,
+        relation: {
+          isFriend,
+          requestSent,
+          requestReceived,
+        },
+      });
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Server error');
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
     }
-}
+  };
 
 export const getMyProfile = async (req: Request, res: Response) => {
     const userId = res.locals.user.id;
 
     try {
-        const myProfile = await User.findById(userId).populate('favoriteSeries').populate('friendsList').populate('friendRequestsSent').populate('friendRequestsReceived').lean();
+        const myProfile = await User.findById(userId)
+      .populate('favoriteSeries')
+      .populate({
+        path: 'friendsList',
+        select: '_id firstName lastName nickName'
+      })
+      .populate({
+        path: 'friendRequestsSent',
+        select: '_id firstName lastName nickName'
+      })
+      .populate({
+        path: 'friendRequestsReceived',
+        select: '_id firstName lastName nickName'
+      })
+      .lean();
 
         res.status(200).json(myProfile);
     } catch (error) {

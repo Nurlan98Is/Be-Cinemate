@@ -5,22 +5,37 @@ export const sendRequestToBeFrined = async (req: Request, res: Response) => {
     try {
         const userId = res.locals.user.id;
         const { friendId } = req.body;
-        console.log('Receive request in SendRequestToBeFriend route:')
-        console.log('userID:', userId)
-        console.log('FriendsID:', friendId)
-        const sendRequesForFriends = await User.findByIdAndUpdate(
-            friendId,
-            { $addToSet: { friendRequestsReceived: userId}},
-            { new: true },
-        ).populate('friendRequestsReceived');
-
-        const setSendRequest = await User.findByIdAndUpdate(
-            userId, 
-            { $addToSet: { friendRequestsSent: friendId}},
-            { new: true },
-        ).populate('friendRequestsSent');
-        
-        res.status(200).json({ sendRequesForFriends, setSendRequest });
+    
+        if (userId === friendId) {
+          return res.status(400).json({ message: 'You cannot add yourself' });
+        }
+    
+        const user = await User.findById(userId);
+        const friend = await User.findById(friendId);
+    
+        if (!user || !friend) {
+          return res.status(404).json({ message: 'User not found' });
+        }
+    
+        if (user.friendRequestsSent.includes(friendId)) {
+          return res.status(400).json({ message: 'Friend request already sent' });
+        }
+    
+        if (user.friendsList.includes(friendId)) {
+          return res.status(400).json({ message: 'Already friends' });
+        }
+    
+        await User.findByIdAndUpdate(
+          friendId,
+          { $addToSet: { friendRequestsReceived: userId } }
+        );
+    
+        await User.findByIdAndUpdate(
+          userId,
+          { $addToSet: { friendRequestsSent: friendId } }
+        );
+    
+        return res.status(200).json({ message: 'Friend request sent' });
     } catch (error) {
         console.log(error);
         res.status(500).send(error);
@@ -45,7 +60,7 @@ export const addToFriend = async (req: Request, res: Response) => {
                 $pull: { friendRequestsReceived: friendId }
             },
             { new: true }
-        ).populate('friendsList', 'nickName email');
+        ).populate('friendsList');
 
         const updatedFriend = await User.findByIdAndUpdate(
             friendId,
@@ -54,7 +69,7 @@ export const addToFriend = async (req: Request, res: Response) => {
                 $pull: { friendRequestsSent: userId }
             },
             { new: true }
-        ).populate('friendsList',);
+        ).populate('friendsList');
 
         res.status(200).json({ user: updatedUser, friend: updatedFriend });
     } catch (error) {

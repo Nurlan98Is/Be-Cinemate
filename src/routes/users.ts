@@ -16,7 +16,7 @@ router.get('/me/favorite-series', authMiddleware, getFavoriteSeries);
 
 router.get('/', authMiddleware, getUsers);
 
-router.get('/:id', getUserById);
+router.get('/:id', authMiddleware, getUserById);
 
 router.post('/friends/sendRequest', authMiddleware, sendRequestToBeFrined);
 
