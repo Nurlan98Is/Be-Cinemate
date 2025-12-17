@@ -6,10 +6,6 @@ export const sendRequestToBeFrined = async (req: Request, res: Response) => {
         const userId = res.locals.user.id;
         const { friendId } = req.body;
     
-        if (userId === friendId) {
-          return res.status(400).json({ message: 'You cannot add yourself' });
-        }
-    
         const user = await User.findById(userId);
         const friend = await User.findById(friendId);
     
@@ -43,13 +39,49 @@ export const sendRequestToBeFrined = async (req: Request, res: Response) => {
 }
 
 export const removeRequestToBeFriend = async (req: Request, res: Response) => {
-
-}
-
+    try {
+      const currentUserId = res.locals.user.id;
+      const { reqFriendId }  = req.body;
+      console.log('reqId' ,reqFriendId)
+      const currentUser = await User.findById(currentUserId);
+      const reqUser = await User.findById(reqFriendId);
+  
+      if (!currentUser || !reqUser) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      
+      if (currentUser.friendsList.some(id => id.equals(reqUser._id))) {
+        return res.status(400).json({ message: 'Users are already friends' });
+      }
+  
+      // Если запрос существует — удаляем из массивов
+      if (currentUser.friendRequestsSent.some(id => id.equals(reqUser._id))) {
+        currentUser.friendRequestsSent = currentUser.friendRequestsSent.filter(
+          id => !id.equals(reqUser._id)
+        );
+  
+        reqUser.friendRequestsReceived = reqUser.friendRequestsReceived.filter(
+          id => !id.equals(currentUser._id)
+        );
+  
+        await currentUser.save();
+        await reqUser.save();
+  
+        return res.status(200).json({ message: 'Friend request removed' });
+      }
+  
+      res.status(400).json({ message: 'Friend request does not exist' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
+// необходимо доработать логику таким образом что если пользователь отправил запрос то можно добавлять в друзья
 export const addToFriend = async (req: Request, res: Response) => {
     try {
         const userId = res.locals.user.id;
-        const { friendId } = req.body;
+        const { friendId }  = req.body;
         console.log('Receive request in AddToFriends route:')
         console.log('userID:', userId)
         console.log('FriendsID:', friendId)
@@ -77,6 +109,25 @@ export const addToFriend = async (req: Request, res: Response) => {
         res.status(500).send(error);
     }
 }
-export const removeFromFriend = async (req: Request, res: Response) => {
-    
+export const deleteFromFriend = async (req: Request, res: Response) => {
+    try {
+        const currentUserId = res.locals.user.id;
+        const { friendId } = req.body;
+
+         await User.findByIdAndUpdate(
+            currentUserId,
+            { $pull: { friendsList: friendId}, $addToSet: { friendRequestsReceived: friendId}}
+        )
+
+         await User.findByIdAndUpdate(
+            friendId,
+            { $pull: { friendsList: currentUserId }, $addToSet: { friendRequestsSent: currentUserId}}
+        )
+
+        res.status(200).json({ message: 'Friend removed successfully' });
+       
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error)
+    }
 }

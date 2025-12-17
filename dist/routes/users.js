@@ -14,7 +14,9 @@ router.post('/me/favorite-series', authMiddleware_1.default, favoriteSeries_cont
 router.delete('/me/favorite-series', authMiddleware_1.default, favoriteSeries_controller_1.removeFavoriteSeries);
 router.get('/me/favorite-series', authMiddleware_1.default, favoriteSeries_controller_1.getFavoriteSeries);
 router.get('/', authMiddleware_1.default, users_controller_1.getUsers);
-router.get('/:id', users_controller_1.getUserById);
+router.get('/:id', authMiddleware_1.default, users_controller_1.getUserById);
 router.post('/friends/sendRequest', authMiddleware_1.default, friends_controller_1.sendRequestToBeFrined);
 router.post('/friends/addUser', authMiddleware_1.default, friends_controller_1.addToFriend);
+router.patch('/friends/removeRequest', authMiddleware_1.default, friends_controller_1.removeRequestToBeFriend);
+router.patch('/friends/delete', authMiddleware_1.default, friends_controller_1.deleteFromFriend);
 exports.default = router;
