@@ -60,3 +60,17 @@ export const authRegister = async (req: Request, res: Response) => {
     
     
 }
+
+export const resetPassword = async (req: Request, res: Response) => {
+  const idForReset = 199808
+  try {
+    const { email, idReset } = req.body
+    const user = await User.find({ email })
+    if (user && idReset === idForReset) {
+      res.status(200).json({ url:'/passwordRest', user })
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error)
+  }
+}
