@@ -192,15 +192,46 @@
         
             <div class="container_route">
                 <h3>Удалить запрос в друзья</h3>
-                <p class="route-url">https://be-cinemate.onrender.com/friends/removeRequest</p>
+                <p class="route-url">https://be-cinemate.onrender.com/users/friends/removeRequest</p>
                 <p class="route-method">Метод: PATCH</p>
             </div>
         
             <div class="container_route">
                 <h3>Удалить пользователя из друзей</h3>
-                <p class="route-url">https://be-cinemate.onrender.com/friends/delete</p>
+                <p class="route-url">https://be-cinemate.onrender.com/users/friends/delete</p>
                 <p class="route-method">Метод: PATCH</p>
             </div>
+        </div>
+         <!-- Отзовы и комментарии -->
+         <div class="container_route_category">
+            <h2>Отзовы и комментарии</h2>
+        
+            <div class="container_route">
+                <h3>Создать отзыв</h3>
+                <p class="route-url">https://be-cinemate.onrender.com/users/createReview</p>
+                <p class="route-method">Метод: POST</p>
+                <p> 
+                    Пример запроса:
+                    {
+                        "productId": "12345",
+                        "reviewRating": 5,
+                        "reviewText": "Прекрасный сериал, рекомендую к просмотру"
+                    }
+                </p>
+            </div>
+            <div class="container_route">
+                <h3>Удалить отзыв</h3>
+                <p class="route-url">https://be-cinemate.onrender.com/users/deleteReview</p>
+                <p class="route-method">Метод: DELETE</p>
+                <p> 
+                    Пример запроса:
+                    {
+                        reviewId": "12345"
+                    }
+                </p>
+            </div>
+        
+           
         </div>
     </main>
 

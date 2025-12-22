@@ -40,6 +40,46 @@ export const getSerialById = async(req: Request, res: Response) => {
                     as: "allEpisodes"
                 }
             },
+            {
+                $lookup: {
+                    from: "reviews",
+                    localField: "_id",          // поле series._id
+                    foreignField: "productId",  // поле reviews.productId
+                    as: "cinemateReviews"       // массив с отзывами
+                }
+            },
+            {
+                $addFields: {
+                    cinemateReviews: {
+                        $map: {
+                            input: "$cinemateReviews",
+                            as: "review",
+                            in: {
+                                $mergeObjects: [
+                                    {
+                                        _id: "$$review._id",
+                                        productId: "$$review.productId",
+                                        authorId: "$$review.authorId",
+                                        reviewRating: "$$review.reviewRating",
+                                        reviewText: "$$review.reviewText",
+                                        createdAt: "$$review.createdAt",
+                                        updatedAt: "$$review.updatedAt",
+                                        __v: "$$review.__v"
+                                    },
+                                    {
+                                        user: {
+                                            _id: "$$review.user._id",
+                                            firstName: "$$review.user.fristName",
+                                            lastName: "$$review.user.lastName",
+                                            avatar: "$$review.user.avatar"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
             // Вложим эпизоды внутрь сезонов
             {
                 $addFields: {
@@ -68,7 +108,7 @@ export const getSerialById = async(req: Request, res: Response) => {
             // Убираем временный массив allEpisodes
             {
                 $project: {
-                    allEpisodes: 0
+                    allEpisodes: 0,
                 }
             }
         ]);
@@ -85,6 +125,7 @@ export const getSerialById = async(req: Request, res: Response) => {
     }
     
 }
+
 export const getSeriesByFilters = async (req: Request, res: Response) => {
     const { source, genre } = req.query;
     try {

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authRegister = exports.authLogout = exports.authLogin = void 0;
+exports.resetPassword = exports.authRegister = exports.authLogout = exports.authLogin = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const { NODE_ENV } = process.env;
@@ -54,3 +54,18 @@ const authRegister = async (req, res) => {
     }
 };
 exports.authRegister = authRegister;
+const resetPassword = async (req, res) => {
+    const idForReset = 199808;
+    try {
+        const { email, idReset } = req.body;
+        const user = await user_model_1.default.find({ email });
+        if (user && idReset === idForReset) {
+            res.status(200).json({ url: '/passwordRest', user });
+        }
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+};
+exports.resetPassword = resetPassword;

@@ -8,6 +8,8 @@ const favoriteSeries_controller_1 = require("../controllers/user/favoriteSeries.
 const users_controller_1 = require("../controllers/user/users.controller");
 const authMiddleware_1 = __importDefault(require("../middlewares/authMiddleware"));
 const friends_controller_1 = require("../controllers/user/friends.controller");
+const reviews_controller_1 = require("../controllers/user/reviews.controller");
+const reviewMiddleware_1 = require("../middlewares/reviewMiddleware");
 const router = (0, express_1.Router)();
 router.get('/me', authMiddleware_1.default, users_controller_1.getMyProfile);
 router.post('/me/favorite-series', authMiddleware_1.default, favoriteSeries_controller_1.addFavoriteSeries);
@@ -19,4 +21,6 @@ router.post('/friends/sendRequest', authMiddleware_1.default, friends_controller
 router.post('/friends/addUser', authMiddleware_1.default, friends_controller_1.addToFriend);
 router.patch('/friends/removeRequest', authMiddleware_1.default, friends_controller_1.removeRequestToBeFriend);
 router.patch('/friends/delete', authMiddleware_1.default, friends_controller_1.deleteFromFriend);
+router.post('/createReview', authMiddleware_1.default, reviewMiddleware_1.prepareReviewMiddleware, reviews_controller_1.createReview);
+router.delete('/deleteReview', authMiddleware_1.default, reviews_controller_1.deleteReview);
 exports.default = router;

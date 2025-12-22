@@ -3,6 +3,8 @@ import { addFavoriteSeries, removeFavoriteSeries, getFavoriteSeries } from "../c
 import { getUsers, getUserById, getMyProfile } from "../controllers/user/users.controller";
 import authMiddleware from "../middlewares/authMiddleware";
 import { addToFriend, deleteFromFriend, removeRequestToBeFriend, sendRequestToBeFrined } from "../controllers/user/friends.controller";
+import { createReview, deleteReview } from "../controllers/user/reviews.controller";
+import { prepareReviewMiddleware } from "../middlewares/reviewMiddleware";
 
 const router = Router();
 
@@ -26,4 +28,7 @@ router.patch('/friends/removeRequest', authMiddleware, removeRequestToBeFriend);
 
 router.patch('/friends/delete', authMiddleware, deleteFromFriend);
 
+router.post('/createReview', authMiddleware, prepareReviewMiddleware, createReview)
+
+router.delete('/deleteReview', authMiddleware, deleteReview);
 export default router;
