@@ -10,7 +10,8 @@ const prepareReviewMiddleware = (req, res, next) => {
         if (!productId) {
             return res.status(400).json({ error: 'ID продукта обязателен' });
         }
-        if (!reviewRating || isNaN(reviewRating) || reviewRating < 1 || reviewRating > 5) {
+        const rating = Number(reviewRating);
+        if (!rating || isNaN(rating) || rating < 1 || rating > 5) {
             return res.status(400).json({ error: 'Рейтинг должен быть числом от 1 до 5' });
         }
         if (!reviewText || reviewText.trim().length === 0) {
@@ -19,7 +20,7 @@ const prepareReviewMiddleware = (req, res, next) => {
         const reviewData = {
             authorId: res.locals.user.id,
             productId,
-            reviewRating: Number(reviewRating),
+            reviewRating: rating,
             reviewText: reviewText.trim(),
             createdAt: new Date()
         };
