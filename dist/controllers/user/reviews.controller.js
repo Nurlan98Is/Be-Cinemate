@@ -3,8 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteReview = exports.createReview = void 0;
+exports.getReview = exports.deleteReview = exports.createReview = void 0;
 const review_modal_1 = __importDefault(require("../../models/review.modal"));
+const review_modal_2 = __importDefault(require("../../models/review.modal"));
 const createReview = async (req, res) => {
     try {
         const newReview = res.locals.reviewData;
@@ -42,3 +43,15 @@ const deleteReview = async (req, res) => {
     }
 };
 exports.deleteReview = deleteReview;
+const getReview = async (req, res) => {
+    try {
+        const seriesId = req.params.id;
+        const reviews = await review_modal_2.default.find({ productId: seriesId }).populate('authorId', 'firstName lastName userName');
+        res.status(200).json(reviews);
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+    }
+};
+exports.getReview = getReview;

@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import Review from '../../models/review.modal'
+import reviewModal from "../../models/review.modal"
 
 export const createReview = async (req: Request, res: Response) => {
     try {
@@ -34,5 +35,17 @@ export const deleteReview = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error);
         res.status(500).send(error)
+    }
+}
+
+export const getReview = async (req: Request, res: Response) => {
+    try {
+        const seriesId = req.params.id
+        
+        const reviews = await reviewModal.find({ productId: seriesId}).populate('authorId', 'firstName lastName userName');
+        res.status(200).json(reviews)
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error)
     }
 }
